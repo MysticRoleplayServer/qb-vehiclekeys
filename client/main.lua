@@ -193,6 +193,11 @@ AddEventHandler('onResourceStart', function(resourceName)
     end
 end)
 
+-- r14-evidence
+RegisterNetEvent('qb-vehiclekeys:client:UpdateLastPicked', function(entity)
+    lastPickedVehicle = entity
+end) 
+
 -- Handles state right when the player selects their character and location.
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     GetKeys()
