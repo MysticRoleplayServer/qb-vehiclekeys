@@ -137,3 +137,18 @@ QBCore.Commands.Add('removekeys', Lang:t('addcom.rkeys'), { { name = Lang:t('add
     end
     RemoveKeys(tonumber(args[1]), args[2])
 end, 'admin')
+
+RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function()
+    local playerId = source
+    local citizenid = QBCore.Functions.GetPlayer(playerId).PlayerData.citizenid
+    exports.oxmysql:execute("SELECT `plate` FROM `player_vehicles` WHERE `citizenid` = ?", { citizenid }, function(result)
+        for i = 1, #result do
+            local plate = result[i].plate
+            if not VehicleList[plate] then
+                VehicleList[plate] = {}
+            end
+            VehicleList[plate][citizenid] = true
+            TriggerClientEvent("qb-vehiclekeys:client:AddKeys", playerId, plate)
+        end
+    end)
+end)
